@@ -81,4 +81,44 @@ public class SpringAmqpTest {
         rabbitTemplate.convertAndSend(exchangeName, "blue", message);
     }
 
+    /**
+     * 向topicExchange发送消息
+     */
+    @Test
+    public void testSendTopicExchange() {
+        // 交换机名称
+        String exchangeName = "hmall.topic";
+        // 消息
+        String message = "喜报！孙悟空大战哥斯拉，胜!";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "china.news", message);
+    }
+
+    /**
+     * 向topicExchange发送消息
+     */
+    @Test
+    public void testSendTopicExchangeTwo() {
+        // 交换机名称
+        String exchangeName = "hmall.topic";
+        // 消息
+        String message = "蓝色通知，警报解除，哥斯拉是放的气球";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "japan.news", message);
+    }
+
+    /**
+     * 向topicExchange发送消息
+     */
+    @Test
+    public void testSendTopicExchangeThree() {
+        // 交换机名称
+        String exchangeName = "hmall.topic";
+        // 消息
+        String message = "今天天气不错，我的心情挺好";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "china.news", message);
+    }
+
+
 }
