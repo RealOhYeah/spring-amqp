@@ -41,4 +41,23 @@ public class SpringRabbitListener {
         Thread.sleep(200);
     }
 
+    /**
+     * 接受hmall.fanout的消息
+     * @param msg
+     */
+    @RabbitListener(queues = "fanout.queue1")
+    public void listenFanoutQueue1(String msg) {
+        System.out.println("消费者1所在的fanout.queue1接收到Fanout消息：【" + msg + "】");
+    }
+
+    /**
+     * 接受hmall.fanout的消息
+     * @param msg
+     */
+    @RabbitListener(queues = "fanout.queue2")
+    public void listenFanoutQueue2(String msg) {
+        System.out.println("消费者2所在的fanout.queue2接收到Fanout消息：【" + msg + "】");
+    }
+
+
 }

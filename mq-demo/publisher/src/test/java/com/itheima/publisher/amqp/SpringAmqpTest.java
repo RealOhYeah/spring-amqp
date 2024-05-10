@@ -13,7 +13,7 @@ public class SpringAmqpTest {
     private RabbitTemplate rabbitTemplate;
 
     /**
-     * 测试消息发送
+     * 测试消息发送(发队列)
      */
     @Test
     public void testSendMessage() {
@@ -32,7 +32,7 @@ public class SpringAmqpTest {
     @Test
     public void testWorkQueue() throws InterruptedException {
         // 队列名称
-        String queueName = "simple.queue";
+        String queueName = "work.queue";
         // 消息
         String message = "hello, message_";
         for (int i = 0; i < 50; i++) {
@@ -40,6 +40,19 @@ public class SpringAmqpTest {
             rabbitTemplate.convertAndSend(queueName, message + i);
             Thread.sleep(20);
         }
+    }
+
+
+    /**
+     * 向新声明的交换机发送消息(hmall.fanout)
+     */
+    @Test
+    public void testFanoutExchange() {
+        // 交换机名称
+        String exchangeName = "hmall.fanout";
+        // 消息
+        String message = "hello, everyone!";
+        rabbitTemplate.convertAndSend(exchangeName, null, message);
     }
 
 }
