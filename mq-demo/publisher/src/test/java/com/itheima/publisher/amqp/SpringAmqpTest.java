@@ -55,4 +55,30 @@ public class SpringAmqpTest {
         rabbitTemplate.convertAndSend(exchangeName, null, message);
     }
 
+    /**
+     * 向direct类型的交换机来发送消息(hmall.direct)
+     */
+    @Test
+    public void testSendDirectExchange() {
+        // 交换机名称
+        String exchangeName = "hmall.direct";
+        // 消息
+        String message = "红色警报！日本乱排核废水，导致海洋生物变异，惊现哥斯拉！";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "red", message);
+    }
+
+    /**
+     * 向direct类型的交换机来发送消息(hmall.direct)
+     */
+    @Test
+    public void testSendDirectExchangeTwo() {
+        // 交换机名称
+        String exchangeName = "hmall.direct";
+        // 消息
+        String message = "最新报道，哥斯拉是居民自治巨型气球，虚惊一场！";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "blue", message);
+    }
+
 }
