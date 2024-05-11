@@ -60,6 +60,12 @@ public class FanoutConfiguration {
     @Bean
     public Binding fanoutBinding4(){
         return BindingBuilder.bind(fanoutQueue4()).to(fanoutExchange());
-
     }
+
+    @Bean
+    public Queue objectQueue() {
+        return new Queue("object.queue");
+    }
+
+
 }
