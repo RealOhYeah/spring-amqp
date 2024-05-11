@@ -5,6 +5,11 @@ spring:
     virtual-host: /hmall # 虚拟主机(用户只能使用自己创建的虚拟主机)
     username: hmall # 用户名
     password: 1234 # 密码
+    connection-timeout: 1s
+    template:
+      retry:
+        enabled: true
+        multiplier: 2
 logging:
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
