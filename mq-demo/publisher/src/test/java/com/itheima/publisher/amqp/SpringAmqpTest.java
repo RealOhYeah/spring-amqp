@@ -3,9 +3,11 @@ package com.itheima.publisher.amqp;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageDeliveryMode;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,7 +208,32 @@ public class SpringAmqpTest {
         }
     }
 
+    /**
+     * 发送超过10s就会过期的消息
+     */
+    @Test
+    void testSendTTLMessageOne() {
+        rabbitTemplate.convertAndSend("simple.direct", "hi", "hello", new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                message.getMessageProperties().setExpiration("10000");
+                return message;
+            }
+        });
+        log.info("消息发送成功！");
+    }
 
+    /**
+     * 发送超过10s就会过期的消息
+     */
+    @Test
+    void testSendTTLMessageTwo() {
+        Message message = MessageBuilder.withBody("hello".getBytes(StandardCharsets.UTF_8))
+                .setExpiration("10000")
+                .build();
+        rabbitTemplate.convertAndSend("simple.direct", "hi", message);
+        log.info("消息发送成功！");
+    }
 
 
 

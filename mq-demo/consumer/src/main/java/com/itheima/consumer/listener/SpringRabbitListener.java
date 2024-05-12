@@ -1,13 +1,21 @@
 package com.itheima.consumer.listener;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 
 @Slf4j
@@ -116,7 +124,14 @@ public class SpringRabbitListener {
         System.out.println("消费者2接收到topic.queue2的消息：【" + msg + "】");
     }
 
-
+    /**
+     * 死信交换机监听消息
+     * @param msg
+     */
+    @RabbitListener(queues = "dlx.queue")
+    public void listenDlxQueue(String msg){
+        log.info("dlx.queue的消息：【" + msg +"】");
+    }
 
 
 
