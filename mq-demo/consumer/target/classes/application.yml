@@ -8,6 +8,8 @@ spring:
     listener:
       simple:
         prefetch: 1 # 每次只能获取一条消息，处理完成才能获取下一个消息
+        retry:
+          enabled: true # 开启消费者失败重试机制 --- 默认重试三次
 logging:
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
