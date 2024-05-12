@@ -180,7 +180,8 @@ public class SpringAmqpTest {
 
     /**
      * 测试一百万条消息发送到mq(非持久化)
-     * 内存被占满，产生阻塞的影响（paged out），此时mq不能访问
+     * 内存被占满，阻塞情况，此时mq不能访问。
+     * （此时会从内存中的消息写入到磁盘中---Paged Out）
      */
     @Test
     void testPageOutOne() {
@@ -188,7 +189,7 @@ public class SpringAmqpTest {
                 .withBody("hello".getBytes(StandardCharsets.UTF_8))
                 .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT).build();
         for (int i = 0; i < 1000000; i++) {
-            rabbitTemplate.convertAndSend("lazy.queue", message);
+            rabbitTemplate.convertAndSend("simple.queue", message);
         }
     }
     /**
@@ -201,9 +202,12 @@ public class SpringAmqpTest {
                 .withBody("hello".getBytes(StandardCharsets.UTF_8))
                 .setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
         for (int i = 0; i < 1000000; i++) {
-            rabbitTemplate.convertAndSend("lazy.queue", message);
+            rabbitTemplate.convertAndSend("simple.queue", message);
         }
     }
+
+
+
 
 
 
