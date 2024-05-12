@@ -15,5 +15,5 @@ spring:
       retry:
         enabled: true
         multiplier: 2
-    publisher-confirm-type: correlated # 开启publisher confirm机制，并设置confirm类型
-    publisher-returns: true # 开启publisher return机制 (这个一般不开启，为了看到结果测试才开启)
+#    publisher-confirm-type: correlated # 开启publisher confirm机制，并设置confirm类型
+#    publisher-returns: true # 开启publisher return机制 (这个一般不开启，为了看到结果测试才开启)

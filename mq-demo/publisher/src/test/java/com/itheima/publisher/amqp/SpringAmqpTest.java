@@ -3,12 +3,16 @@ package com.itheima.publisher.amqp;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -173,5 +177,34 @@ public class SpringAmqpTest {
 
         Thread.sleep(2000);
     }
+
+    /**
+     * 测试一百万条消息发送到mq(非持久化)
+     * 内存被占满，产生阻塞的影响（paged out），此时mq不能访问
+     */
+    @Test
+    void testPageOutOne() {
+        Message message = MessageBuilder
+                .withBody("hello".getBytes(StandardCharsets.UTF_8))
+                .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT).build();
+        for (int i = 0; i < 1000000; i++) {
+            rabbitTemplate.convertAndSend("lazy.queue", message);
+        }
+    }
+    /**
+     * 测试一百万条消息发送到mq(持久化)
+     * 将数据持久化到本地磁盘，然后内存可以继续接收消息，不阻塞
+     */
+    @Test
+    void testPageOutTwo() {
+        Message message = MessageBuilder
+                .withBody("hello".getBytes(StandardCharsets.UTF_8))
+                .setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
+        for (int i = 0; i < 1000000; i++) {
+            rabbitTemplate.convertAndSend("lazy.queue", message);
+        }
+    }
+
+
 
 }
